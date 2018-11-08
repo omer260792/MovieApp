@@ -15,27 +15,11 @@ class ViewController: UIViewController {
     var movieArray : [movieObj] = []
     var moviesCoreData : [NSManagedObject] = []
 
-
-    var json : Any = ""{
-        didSet{
-            
-            guard let transaction = json as? [Json] else {return}
-            for (idx ,tran) in transaction.enumerated() {
-                guard let tran = tran as? Json else {return}
-                print(tran["id"] as! String)
-
-                DispatchQueue.main.async {
-
-                }
-            }
-        }}
-
-
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //ViewWillAppear
          navigationItem.title = "REST API"
-        
         
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
             return
@@ -48,32 +32,25 @@ class ViewController: UIViewController {
             moviesCoreData = try managedContext.fetch(fetchRequest)
             
             if (moviesCoreData.isEmpty) {
-            
-                
+        
             }else{
                 for n in 0...moviesCoreData.count-1{
                     
                     let objetToDelete = moviesCoreData[n] as! NSManagedObject
+                    
                     managedContext.delete(objetToDelete)
+                    
                     
                     try managedContext.save()
                     
                 }
-                
-              
             }
             
-        
-
-            
-           
             
         } catch let error as NSError {
             print("Could not fetch. \(error), \(error.userInfo)")
         }
-        
-        
-        
+    
         let urlString = "https://api.androidhive.info/json/movies.json"
         guard let url = URL(string: urlString) else { return }
         
@@ -89,16 +66,9 @@ class ViewController: UIViewController {
                 //Decode retrived data with JSONDecoder and assing type of Article object
                 let moviesData = try JSONDecoder().decode([movieObj].self, from: data)
                 
-         
-
-
                 for movie in moviesData{
 
-                    //self.movieArray.append(movie)
-                  //  print(movie.self.genre.description)
-                    
-
-                    var code = ""
+                    let code = ""
                     
                     //Get back to the main queue
                     DispatchQueue.main.async {
@@ -143,15 +113,8 @@ class ViewController: UIViewController {
         do {
             try managedContext.save()
             let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Movie")
+            _ = try managedContext.fetch(fetchRequest)
             
-                let test = try managedContext.fetch(fetchRequest)
-            
-            for movie in test{
-                
-               // print(movie.value(forKey: "genre"))
-
-            }
-
         } catch let error as NSError {
             print("Could not save. \(error), \(error.userInfo)")
         }
@@ -172,6 +135,5 @@ struct movieObj: Codable {
 
 }
 
-typealias Json = [String : Any]
 
 

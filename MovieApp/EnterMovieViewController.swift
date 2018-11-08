@@ -40,7 +40,7 @@ class EnterMovieViewController: UIViewController,  UINavigationControllerDelegat
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
             return
         }
-
+        
         let titleS:String = titleTxtF.text ?? "title"
         let ratingS:Double = Double((ratingTxtF.text) as! String ) ?? 0
         let releaseYearS:Double = Double((yearTxtF.text)  as! String ) ?? 0

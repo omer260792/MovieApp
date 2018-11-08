@@ -22,10 +22,8 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
             return
         }
-        
         movies =  (appDelegate.movies)
-        print(movies)
-        var sortedArray = movies.sorted(by: { ($0.value(forKey: "releaseYear") as! Double) > ($1.value(forKey: "releaseYear") as! Double) })
+        let sortedArray = movies.sorted(by: { ($0.value(forKey: "releaseYear") as! Double) > ($1.value(forKey: "releaseYear") as! Double) })
         movies = sortedArray
         print(sortedArray)
         tableView.reloadData()
@@ -41,36 +39,19 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         }
         
 
-
-        
-        
-    
         let managedContext = appDelegate.persistentContainer.viewContext
-        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Movie")
         
         do {
-            ///////
             let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Movie")
-            
             let test = try managedContext.fetch(fetchRequest)
             
-            
-            
-
             for movie in test{
                 
-                //print(movies)
-
                 appDelegate.movies.append(movie)
 
-
-               // print(movie.value(forKey: "genre"))
-                
             }
 
-           
             movies = appDelegate.movies
-
             tableView.reloadData()
             
             
@@ -81,9 +62,7 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
         tableView.delegate = self
         tableView.dataSource = self
         
-        // Do any additional setup after loading the view.
     }
-    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
        return movies.count
@@ -98,16 +77,16 @@ class TableViewController: UIViewController, UITableViewDelegate, UITableViewDat
 
 
         
-        cell.titleLabel.text = movie.value(forKey: "title") as! String
+        cell.titleLabel.text = movie.value(forKey: "title") as? String
         cell.ratingLabel.text = String(movie.value(forKey: "rating") as! Double)
         cell.yearLabel.text = String(movie.value(forKey: "releaseYear") as! Double)
-        cell.genreLabel.text = movie.value(forKey: "genre") as! String
+        cell.genreLabel.text = movie.value(forKey: "genre") as? String
         cell.imageview.sd_setImage(with: URL(string: movie.value(forKey: "image") as! String), placeholderImage: UIImage(named: "defaultImg.png"))
         
-        var str = movie.value(forKey: "genre") as! String
+        let str = movie.value(forKey: "genre") as! String
         var res = str.trimmingCharacters(in: CharacterSet(charactersIn: "[]"))
         res = res.trim("]")
-        var characters : [Character]
+        let _ : [Character]
         var string : [String] = []
         var endstring : String = ""
         
@@ -137,7 +116,7 @@ endstring = endstring + string[n]
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let dest = segue.destination as? PreviewViewController {
             
-            var movie = movies[(tableView.indexPathForSelectedRow?.row)!]
+            let movie = movies[(tableView.indexPathForSelectedRow?.row)!]
             
             dest.movie  = movie
         }

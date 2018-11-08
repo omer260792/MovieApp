@@ -48,7 +48,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     
-    
+    //NSObject Core Data
     lazy var persistentContainer: NSPersistentContainer = {
         
         let container = NSPersistentContainer(name: "MovieModel")
